@@ -1,0 +1,39 @@
+.coins-list-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+
+  .coins-list-screen-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 760px;
+    margin: 20px 0;
+
+    .search {
+      margin-left: 20px;
+    }
+
+    .sort {
+      margin-right: 30px;
+    }
+  }
+
+  .pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .pages-btns {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+
+      .spacer {
+        width: 30px;
+      }
+    }
+  }
+}

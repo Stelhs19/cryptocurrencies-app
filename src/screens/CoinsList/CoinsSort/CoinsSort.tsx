@@ -2,15 +2,16 @@ import React, { FC } from "react";
 import "./CoinsSort.scss";
 import { Coin } from "../../../models/Coin";
 import { CoinsContext } from "../../../App";
+import "./CoinsSort.scss";
 
 type ListsProps = {
-  id: number,
-  sortProperty: string
-}
+  id: number;
+  sortProperty: string;
+};
 
 const CoinsSort: FC = () => {
-
-  const { data, sortType, setSortType, setData} = React.useContext(CoinsContext);
+  const { data, sortType, setSortType, setData } =
+    React.useContext(CoinsContext);
 
   const lists = [
     { id: 0, sortProperty: "Rating" },
@@ -24,16 +25,11 @@ const CoinsSort: FC = () => {
 
   const [isVisible, setIsVisible] = React.useState(false);
 
-
-  const handleSelectedSortingOption = (
-    dataTable: Coin[],
-    list: ListsProps
-  ) => {
+  const handleSelectedSortingOption = (dataTable: Coin[], list: ListsProps) => {
     setSortType(list);
     setIsVisible(false);
     sortFunction(dataTable, list.sortProperty);
   };
-
 
   const sortFunction = (data: Coin[], key: string) => {
     switch (key) {
@@ -94,8 +90,8 @@ const CoinsSort: FC = () => {
   };
 
   return (
-    <>
-      <div>
+    <div className="dropdown-container">
+      <div className="dropdown-container-sort">
         <p>
           Sort by:
           <span onClick={() => setIsVisible(!isVisible)}>
@@ -104,8 +100,8 @@ const CoinsSort: FC = () => {
         </p>
       </div>
       {isVisible && (
-        <div className="sort-container">
-          <ul className="sort-container-ul">
+        <div className="dropdown-container-sort-by">
+          <ul className="sort-container-sort-by-ul">
             {lists.map((list, index) => (
               <li
                 key={index}
@@ -120,7 +116,7 @@ const CoinsSort: FC = () => {
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

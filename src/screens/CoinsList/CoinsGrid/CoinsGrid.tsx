@@ -1,21 +1,42 @@
 import React, { FC } from "react";
 import "./CoinsGrid.scss";
 import { CoinsContext } from "../../../App";
-
+import { Coin } from "../../../models/Coin";
+import { useNavigate } from "react-router-dom";
+import Button from "../../../components/Button";
+import { addCoin } from "../../../utils/AddCoin";
 
 const CoinsGrid: FC = () => {
-  
-  const {data, setSearchId} = React.useContext(CoinsContext);
+  const { data, setSearchId } = React.useContext(CoinsContext);
+  const navigate = useNavigate();
 
   const formatNumber = (a: string) => {
     return Number.parseFloat(a)
       .toFixed(2)
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-  
+
+  const redirectToCoinInfo = (
+    coin: Coin,
+    e: React.MouseEvent<HTMLTableRowElement>
+  ) => {
+    const target = e.target as HTMLTableCellElement;
+    if (target.parentElement) {
+      const row = target.parentElement as HTMLTableRowElement;
+      if (row.cells) {
+        const isLastColumn = target.cellIndex === row.cells.length - 1;
+
+        if (!isLastColumn) {
+          setSearchId(coin.id);
+          navigate(`${coin.id}`);
+        }
+      }
+    }
+  };
+
   return (
-    <div className="coins-list-container">
-      <table>
+    <div className="coins-list">
+      <table className="coins-list-container">
         <thead>
           <tr>
             <td>Symbol</td>
@@ -29,14 +50,19 @@ const CoinsGrid: FC = () => {
         <tbody>
           {data &&
             data.map((coin) => (
-              <tr key={coin.id} onClick={() => setSearchId(coin.id)}>
+              <tr key={coin.id} onClick={(e) => redirectToCoinInfo(coin, e)}>
                 <td>{coin.symbol}</td>
-                <td><img style={{"width" : "30px", "height" : "30px"}} src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`} alt={coin.name}/></td>
+                <td>
+                  <img
+                    src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                    alt={coin.name}
+                  />
+                </td>
                 <td>{`$${formatNumber(coin.priceUsd)}`}</td>
                 <td>{`$${formatNumber(coin.marketCapUsd)}`}</td>
                 <td>{`${formatNumber(coin.changePercent24Hr)} %`}</td>
                 <td>
-                  <button type="button">Add</button>
+                  <Button label="Add" onClick={() => addCoin(coin)} />
                 </td>
               </tr>
             ))}
