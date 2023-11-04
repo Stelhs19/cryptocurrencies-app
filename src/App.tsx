@@ -5,7 +5,6 @@ import { Coin } from "./models/Coin";
 import CoinInfo from "./screens/CoinInfo/CoinInfo";
 import { filterData } from "./utils/Utils";
 import Header from "./components/Header";
-import Loading from "./components/Loading";
 
 type SortPropertyType = {
   id: number;
