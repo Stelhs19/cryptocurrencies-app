@@ -8,19 +8,27 @@ import "./CoinsListScreen.scss";
 import Button from "../../components/Button";
 
 const CoinsListScreen: FC = () => {
-  const { offset, isLoading, setOffset, setSearchId } =
+  const { offset, isLoading, setOffset, setSearchId, setSortType } =
     React.useContext(CoinsContext);
 
   const onClickNext = () => {
     setOffset(offset + 20);
     setSearchId("");
     scrollToTop();
+    setSortType({
+      id: 0,
+      sortProperty: "Rating",
+    })
   };
 
   const onClickBack = () => {
     setOffset(offset - 20);
     setSearchId("");
     scrollToTop();
+    setSortType({
+      id: 0,
+      sortProperty: "Rating",
+    })
   };
 
   const scrollToTop = () => {

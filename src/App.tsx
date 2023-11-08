@@ -18,10 +18,17 @@ type ContextTypeCoin = {
   offset: number;
   searchId: string;
   isLoading: boolean;
+  totalPrice: number;
+  setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
   setData: React.Dispatch<React.SetStateAction<Coin[]>>;
   setSortType: React.Dispatch<React.SetStateAction<SortPropertyType>>;
   setOffset: React.Dispatch<React.SetStateAction<number>>;
   setSearchId: React.Dispatch<React.SetStateAction<string>>;
+};
+
+type ContextTypeSearchedCoin = {
+  searchedCoin: Coin;
+  setSearchedCoin: React.Dispatch<React.SetStateAction<Coin>>;
 };
 
 const initialContextValue: ContextTypeCoin = {
@@ -31,15 +38,12 @@ const initialContextValue: ContextTypeCoin = {
   offset: 0,
   searchId: "",
   isLoading: true,
+  totalPrice: 0,
+  setTotalPrice: () => 0,
   setData: () => [],
   setSortType: () => {},
   setOffset: () => 0,
   setSearchId: () => "",
-};
-
-type ContextTypeSearchedCoin = {
-  searchedCoin: Coin;
-  setSearchedCoin: React.Dispatch<React.SetStateAction<Coin>>;
 };
 
 const initialContextValueSearchedCoin: ContextTypeSearchedCoin = {
@@ -71,12 +75,13 @@ const App: FC = () => {
   const [originalData, setOriginalData] = React.useState<Coin[]>([]);
   const [data, setData] = React.useState<Coin[]>([]);
   const [isLoading, setIsLosding] = React.useState(true);
+  const [offset, setOffset] = React.useState(0);
+  const [searchId, setSearchId] = React.useState("");
+  const [totalPrice, setTotalPrice] = React.useState<number>(0);
   const [sortType, setSortType] = React.useState({
     id: 0,
     sortProperty: "Rating",
   });
-  const [offset, setOffset] = React.useState(0);
-  const [searchId, setSearchId] = React.useState("");
   const [searchedCoin, setSearchedCoin] = React.useState<Coin>({
     id: "",
     rank: "",
@@ -100,6 +105,8 @@ const App: FC = () => {
     offset,
     searchId,
     isLoading,
+    totalPrice,
+    setTotalPrice,
     setData,
     setSortType,
     setOffset,
@@ -133,6 +140,15 @@ const App: FC = () => {
     fetchData();
     setIsLosding(false);
   }, [search, offset]);
+
+  React.useEffect(() => {
+    const storedTotalPrice = localStorage.getItem("totalPrice");
+    if (!storedTotalPrice) {
+      localStorage.setItem("totalPrice", "0");
+    } else {
+      setTotalPrice(Number(storedTotalPrice));
+    }
+  }, []);
 
   return (
     <CoinsContext.Provider value={contextValue}>

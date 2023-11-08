@@ -5,15 +5,17 @@ import { Coin } from "../models/Coin";
 import "./Header.scss";
 
 const Header: FC = () => {
-  const { originalData } = React.useContext(CoinsContext);
-  const a: Coin[] = originalData
+  const { originalData, totalPrice } = React.useContext(CoinsContext);
+
+  const popularCoins: Coin[] = originalData
     .sort((a: Coin, b: Coin) => Number(a.rank) - Number(b.rank))
     .slice(0, 3);
+
   return (
     <div className="header">
       <div className="header-container">
         <ul className="header-container-coins">
-          {a.map((item) => (
+          {popularCoins.map((item) => (
             <li key={item.id}>
               <div className="header-container-coins-coin">
                 <p className="bold-symbol">{item.symbol}</p>
@@ -24,7 +26,9 @@ const Header: FC = () => {
         </ul>
       </div>
       <div className="header-container-portfolio">
-        <p className="header-container-portfolio-balance">{`0 USD`}</p>
+        <p className="header-container-portfolio-balance">{`${formatNumber(
+          totalPrice.toString()
+        )} USD`}</p>
       </div>
     </div>
   );
